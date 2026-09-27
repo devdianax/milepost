@@ -116,7 +116,9 @@ fn money_contributed_by_two_donors_ends_up_where_everyone_agreed() {
     assert_eq!(programme.client.sweep_unclaimed(), 30_000);
     assert_eq!(p.token.balance(&programme.address), 0);
     assert_eq!(p.token.balance(&p.treasury), 40_000);
-    assert_eq!(p.token.balance(&donor_b), 40_000);
+    // Donor B contributed everything they had and never claimed, so the share
+    // they were owed is the 30_000 the treasury just swept.
+    assert_eq!(p.token.balance(&donor_b), 0);
     assert_eq!(p.token.balance(&school), 15_000);
     assert_eq!(p.token.balance(&recipient), 0);
 

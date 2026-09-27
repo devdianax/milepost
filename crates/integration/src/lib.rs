@@ -1,3 +1,8 @@
+// `no_std`, and empty unless `testutils` is on, so the workspace's wasm build
+// can walk this crate. See the note on `[lib]` in Cargo.toml.
+#![no_std]
+#![cfg(feature = "testutils")]
+
 //! # Cross-contract integration
 //!
 //! Every other suite tests one contract with its neighbours replaced by
@@ -21,7 +26,7 @@
 
 use milepost_attest::AttestClient;
 use milepost_policy_spend::PolicySpendClient;
-use milepost_record::RecordClient;
+use milepost_record::{Error as RecordError, RecordClient};
 use milepost_registry::{Config, RegistryClient};
 use milepost_test_utils::schedule::{
     APPLY_DEADLINE, FEE_BPS, METADATA_HASH_BYTE, RELEASE_DEADLINE, REVIEW_DEADLINE, SWEEP_DEADLINE,
@@ -126,6 +131,8 @@ impl Protocol {
         record.set_admin(&registry_id);
 
         let token_address = milepost_test_utils::register_token(&env);
+        let token = TokenClient::new(&env, &token_address);
+        let mint = StellarAssetClient::new(&env, &token_address);
 
         Protocol {
             config: registry.get_config(),
@@ -139,8 +146,8 @@ impl Protocol {
             record,
             registry,
             policy,
-            token: TokenClient::new(&env, &token_address),
-            mint: StellarAssetClient::new(&env, &token_address),
+            token,
+            mint,
             token_address,
             schema,
             wasm,
@@ -246,6 +253,10 @@ impl Protocol {
 
     /// A recipient's standing, or `None` if no tranche has ever reached them.
     pub fn standing(&self, subject: &Address) -> Option<Standing> {
-        self.record.try_get(subject).unwrap().ok()
+        match self.record.try_get(subject) {
+            Ok(standing) => Some(standing.unwrap()),
+            Err(Ok(RecordError::NotFound)) => None,
+            Err(other) => panic!("reading standing failed: {other:?}"),
+        }
     }
 }

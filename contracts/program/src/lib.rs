@@ -1557,7 +1557,7 @@ impl Programme {
 
         ReleasedBatch {
             recipient,
-            tranches: uids.len() as u32,
+            tranches: uids.len(),
             amount: total_released,
         }
         .publish(&env);

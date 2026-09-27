@@ -12,12 +12,12 @@ publish = false
 
 [lib]
 doctest = false
-# Gated, because `cargo build --target wasm32v1-none --release` — the build every
-# deployment starts from — walks every workspace member, and a crate built on the
-# SDK's test utilities cannot be built for a contract. Nothing here is skipped by
-# accident: `cargo test --all-features`, which is the gate in docs/testing-guide.md,
-# turns it on.
-required-features = ["testutils"]
+# `cargo build --target wasm32v1-none --release` — the build every deployment
+# starts from — walks every workspace member, and a crate built on the SDK's test
+# utilities cannot be built for a contract. Cargo ignores `required-features` on
+# a library, so the gate lives in `src/lib.rs`: without `testutils` the crate is
+# empty and `no_std`. `cargo test --all-features`, the gate in
+# docs/testing-guide.md, turns it on.
 
 [[test]]
 name = "money_path"

@@ -464,7 +464,7 @@ fn crediting_publishes_the_whole_standing() {
         &f.programme,
         &500,
         &attestation,
-        1_000,
+        &1_000,
     );
 
     f.client
@@ -503,7 +503,7 @@ fn a_later_credit_folds_onto_the_earlier_root() {
     let second = hash(&f.env, 2);
     let root = f
         .client
-        .next_root(&root_after_first, &f.programme, &300, &second, 2_000);
+        .next_root(&root_after_first, &f.programme, &300, &second, &2_000);
     f.client
         .credit(&f.writer, &f.subject, &f.programme, &300, &second);
 

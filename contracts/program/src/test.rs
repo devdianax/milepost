@@ -4702,20 +4702,23 @@ fn a_batch_release_publishes_one_event_per_tranche_and_a_summary() {
     let total = f.client.release_batch(&recipient, &uids, &f.verifier);
 
     assert_eq!(total, 900);
-    let tranche = |n: u32, released: i128, uid: BytesN<32>| Released {
-        recipient: recipient.clone(),
-        payee: school.clone(),
-        amount: 300,
-        attestation: uid,
-        award: Award {
+    let tranche = |n: u32, released: i128, uid: BytesN<32>| {
+        Released {
             recipient: recipient.clone(),
-            granted: 900,
-            released,
-            tranches: 3,
-            tranches_released: n,
             payee: school.clone(),
-            mode: Mode::Direct,
-        },
+            amount: 300,
+            attestation: uid,
+            award: Award {
+                recipient: recipient.clone(),
+                granted: 900,
+                released,
+                tranches: 3,
+                tranches_released: n,
+                payee: school.clone(),
+                mode: Mode::Direct,
+            },
+        }
+        .to_xdr(&f.env, &f.client.address)
     };
     assert_events(
         &f.env,

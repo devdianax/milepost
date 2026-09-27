@@ -552,7 +552,7 @@ fn creating_a_programme_publishes_who_owns_it() {
         &REVIEW_DEADLINE,
         &RELEASE_DEADLINE,
         &SWEEP_DEADLINE,
-        &2u32,
+        &1u32,
         &3u32,
         &BytesN::from_array(&f.env, &[7u8; 32]),
         &vec![&f.env, Address::generate(&f.env)],
