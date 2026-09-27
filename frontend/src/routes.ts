@@ -25,6 +25,8 @@ export const APP_ROUTES: AppRoute[] = [
   { path: '/admin/standing', label: 'Admin standing lookup' },
   { path: '/attestations', label: 'Attestation lookup' },
   { path: '/schemas/register', label: 'Register schema' },
+  { path: '/keepalive', label: 'Keepalive' },
+  { path: '/admin/payees', label: 'Payee management' },
 ];
 
 /**

@@ -55,6 +55,12 @@ const AttestationLookup = lazy(() =>
 const RegisterSchema = lazy(() =>
   import("./pages/RegisterSchema").then((m) => ({ default: m.RegisterSchema })),
 );
+const Keepalive = lazy(() =>
+  import("./pages/Keepalive").then((m) => ({ default: m.Keepalive })),
+);
+const PayeeManagement = lazy(() =>
+  import("./pages/PayeeManagement").then((m) => ({ default: m.PayeeManagement })),
+);
 const NotFound = lazy(() => import("./pages/NotFound").then((m) => ({ default: m.NotFound })));
 
 // Keyed by the same paths as APP_ROUTES, so the header Menu (built from that
@@ -74,6 +80,8 @@ const ROUTE_ELEMENTS: Record<string, ReactElement> = {
   "/admin/standing": <AdminDashboard />,
   "/attestations": <AttestationLookup />,
   "/schemas/register": <RegisterSchema />,
+  "/keepalive": <Keepalive />,
+  "/admin/payees": <PayeeManagement />,
 };
 
 /**
